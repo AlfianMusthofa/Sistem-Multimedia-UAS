@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Compression App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    
+
+    <div class="container" id="container">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file" accept="image/*" hidden>
+            <div class="img-area" data-img="">
+                <i class='bx bxs-cloud-upload icon'></i>
+                <h3>Upload Image</h3>
+                <p>silahkan upload gambar</p>
+            </div>
+            <button class="select-image" type="button">Select Image</button>
+            <input type="submit" value="Process Image" class="upload-image" style="margin-top: 30px;">
+        </form>
+    </div>
+
+    <div class="content" id="content">
+        {% if original_image_url %}
+        <div class="gallery">
+            <h2>Original Image</h2>
+            <img src="{{ original_image_url }}" alt="Original Image">
+            <div class="desc">Original size: {{ original_size }} bits</div>
+        </div>
+        <div class="gallery">
+            <h2>Huffman Compressed Image</h2>
+            <img src="{{ huffman_image_url }}" alt="Huffman Compressed Image">
+            <div class="desc">Huffman Compressed size: {{ huffman_compressed_size }} bits</div>
+            <div class="desc">Huffman Compression Ratio: {{ huffman_ratio }}</div>
+        </div>
+        <div class="gallery">
+            <h2>Arithmetic Compressed Image</h2>
+            <img src="{{ arithmetic_image_url }}" alt="Arithmetic Compressed Image">
+            <div class="desc">Arithmetic Compressed size: {{ arithmetic_compressed_size }} bits</div>
+            <div class="desc">Arithmetic Compression Ratio: {{ arithmetic_ratio }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.querySelector('.select-image').addEventListener('click', function() {
+            document.getElementById('file').click();
+        });
+
+        document.getElementById('file').addEventListener('change', function() {
+            const imgArea = document.querySelector('.img-area');
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    imgArea.style.backgroundImage = `url(${reader.result})`;
+                    imgArea.dataset.img = file.name;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
