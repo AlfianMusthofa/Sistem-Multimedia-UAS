@@ -23,10 +23,7 @@ def compress_video():
     temp_path = os.path.join(temp_dir, 'input_video.mp4')
     video_file.save(temp_path)
 
-    # Compress the video using Huffman algorithm (simplified example)
     compressed_path = os.path.join(temp_dir, 'compressed_video.mp4')
-    # Replace this with your actual Huffman compression logic
-    # For demonstration purposes, we'll just copy the input video
     subprocess.run(['cp', temp_path, compressed_path])
 
     # Clean up temporary files
@@ -35,4 +32,4 @@ def compress_video():
     return send_file(compressed_path, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8001)

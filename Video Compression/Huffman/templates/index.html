@@ -5,14 +5,17 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Video Compression</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-   <h1>Video Compression Using Huffman Algorithm</h1>
-   <form action="/compress" method="post" enctype="multipart/form-data">
-      <input type="file" name="video">
-      <input type="submit" value="Compress Video">
-   </form>
+   <div class="container">
+      <h1>Video Compression Using Huffman Algorithm</h1>
+      <form action="/compress" method="post" enctype="multipart/form-data">
+         <input type="file" name="video">
+         <input type="submit" value="Compress Video" class="button">
+      </form>
+   </div>
 </body>
 
 </html>

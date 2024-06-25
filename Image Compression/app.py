@@ -63,4 +63,4 @@ def upload_file():
                                arithmetic_ratio=arithmetic_ratio)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

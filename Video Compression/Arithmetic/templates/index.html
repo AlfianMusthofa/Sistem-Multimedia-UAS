@@ -5,41 +5,24 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Document</title>
-   <style>
-      body {
-         font-family: Arial, sans-serif;
-         margin: 20px;
-      }
-
-      form {
-         display: flex;
-         flex-direction: column;
-         max-width: 300px;
-      }
-
-      label {
-         margin-top: 10px;
-      }
-
-      input[type="file"] {
-         margin-bottom: 10px;
-      }
-
-      button {
-         margin-top: 10px;
-      }
-   </style>
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-   <h1>Video Compressor</h1>
-   <form id="upload-form" enctype="multipart/form-data">
-      <label for="file">Choose a video file:</label>
-      <input type="file" id="file" name="file" accept="video/*" required>
-      <label for="target_size">Target size (in MB):</label>
-      <input type="number" id="target_size" name="target_size" step="0.1" required>
-      <button type="submit">Compress</button>
-   </form>
+   <div class="container">
+      <h1>Video Compressor Arithmetic</h1>
+      <form id="upload-form" enctype="multipart/form-data">
+         <div class="box1">
+            <label for="file">Choose a video file:</label>
+            <input type="file" id="file" name="file" accept="video/*" required>
+         </div>
+         <div class="box2">
+            <label for="target_size">Target size (in MB):</label>
+            <input type="number" id="target_size" name="target_size" step="0.1" required>
+         </div>
+         <button type="submit">Compress</button>
+      </form>
+   </div>
 
    <script>
       document.getElementById('upload-form').addEventListener('submit', function (event) {
