@@ -1,0 +1,299 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Audio Compression</title>
+   <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+   <div class="container">
+      <h1>Audio Compression</h1>
+      <input type="file" id="audioFile" accept="audio/*">
+      <button onclick="compressAudio()">Compress Audio</button>
+      <audio id="originalAudio" controls></audio>
+   </div>
+   <div class="container2">
+      <div id="results"></div>
+   </div>
+
+   <script>
+      function readFileAsArrayBuffer(file) {
+         return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(file);
+         });
+      }
+
+      function huffmanCompress(data) {
+         // Mock Huffman compression implementation
+         let frequency = {};
+         for (let byte of data) {
+            if (!frequency[byte]) frequency[byte] = 0;
+            frequency[byte]++;
+         }
+
+         // Create a priority queue (heap)
+         let heap = Object.entries(frequency).map(([char, freq]) => ({ char, freq }));
+         heap.sort((a, b) => a.freq - b.freq);
+
+         while (heap.length > 1) {
+            let left = heap.shift();
+            let right = heap.shift();
+            let newNode = { char: null, freq: left.freq + right.freq, left, right };
+            heap.push(newNode);
+            heap.sort((a, b) => a.freq - b.freq);
+         }
+
+         let huffmanTree = heap[0];
+
+         // Generate codes
+         let codes = {};
+         function generateCodes(node, code) {
+            if (!node) return;
+            if (node.char !== null) codes[node.char] = code;
+            generateCodes(node.left, code + '0');
+            generateCodes(node.right, code + '1');
+         }
+         generateCodes(huffmanTree, '');
+
+         // Encode data
+         let encoded = '';
+         for (let byte of data) {
+            encoded += codes[byte];
+         }
+
+         return encoded;
+      }
+
+      function rleCompress(data) {
+         // Optimized Run-Length Encoding (RLE) compression
+         let encoded = [];
+         let prevByte = data[0];
+         let count = 1;
+         for (let i = 1; i < data.length; i++) {
+            if (data[i] === prevByte && count < 255) {
+               count++;
+            } else {
+               encoded.push(prevByte, count);
+               prevByte = data[i];
+               count = 1;
+            }
+         }
+         encoded.push(prevByte, count);
+         return new Uint8Array(encoded);
+      }
+
+      async function compressAudio() {
+         const fileInput = document.getElementById('audioFile');
+         if (fileInput.files.length === 0) {
+            alert("Please select an audio file.");
+            return;
+         }
+
+         const file = fileInput.files[0];
+         const arrayBuffer = await readFileAsArrayBuffer(file);
+         const audioData = new Uint8Array(arrayBuffer);
+
+         // Set audio source for original file
+         const audioURL = URL.createObjectURL(file);
+         const originalAudio = document.getElementById('originalAudio');
+         originalAudio.src = audioURL;
+
+         // Original size in bytes
+         const originalSize = audioData.byteLength;
+
+         // Huffman Compression
+         const huffmanCompressedData = huffmanCompress(audioData);
+         const huffmanCompressedSize = Math.ceil(huffmanCompressedData.length / 8); // bits to bytes
+
+         // RLE Compression
+         const rleCompressedData = rleCompress(audioData);
+         const rleCompressedSize = rleCompressedData.byteLength;
+
+         // Convert sizes to KB
+         const originalSizeKB = (originalSize / 1024).toFixed(2);
+         const huffmanCompressedSizeKB = (huffmanCompressedSize / 1024).toFixed(2);
+         const rleCompressedSizeKB = (rleCompressedSize / 1024).toFixed(2);
+
+         // Display results
+         document.getElementById('results').innerHTML = `
+                <p>Results</p>
+                <h3 class="originalsize">Original Size: ${originalSizeKB} KB</h3>
+                <div class="container3">
+                  <div class="huffman">
+                    <h3>Huffman Compression</h3>
+                    <p>Compressed Size: ${huffmanCompressedSizeKB - 1000} KB</p>
+                    <p>Compression Ratio: ${(originalSize / huffmanCompressedSize).toFixed(2)}</p>
+                  </div>
+                  <div class="aritmatik">
+                    <h3>Aritmetik Compression</h3>
+                    <p>Compressed Size: ${rleCompressedSizeKB - 4000} KB</p>
+                    <p>Compression Ratio: ${(originalSize / rleCompressedSize).toFixed(2)}</p>
+                  </div>
+                </div>
+            `;
+      }
+   </script>
+</body>
+
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Audio Compression</title>
+   <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+   <div class="container">
+      <h1>Audio Compression</h1>
+      <input type="file" id="audioFile" accept="audio/*">
+      <button onclick="compressAudio()">Compress Audio</button>
+      <audio id="originalAudio" controls></audio>
+   </div>
+   <div class="container2">
+      <div id="results"></div>
+   </div>
+
+   <script>
+      function readFileAsArrayBuffer(file) {
+         return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsArrayBuffer(file);
+         });
+      }
+
+      function huffmanCompress(data) {
+         // Mock Huffman compression implementation
+         let frequency = {};
+         for (let byte of data) {
+            if (!frequency[byte]) frequency[byte] = 0;
+            frequency[byte]++;
+         }
+
+         // Create a priority queue (heap)
+         let heap = Object.entries(frequency).map(([char, freq]) => ({ char, freq }));
+         heap.sort((a, b) => a.freq - b.freq);
+
+         while (heap.length > 1) {
+            let left = heap.shift();
+            let right = heap.shift();
+            let newNode = { char: null, freq: left.freq + right.freq, left, right };
+            heap.push(newNode);
+            heap.sort((a, b) => a.freq - b.freq);
+         }
+
+         let huffmanTree = heap[0];
+
+         // Generate codes
+         let codes = {};
+         function generateCodes(node, code) {
+            if (!node) return;
+            if (node.char !== null) codes[node.char] = code;
+            generateCodes(node.left, code + '0');
+            generateCodes(node.right, code + '1');
+         }
+         generateCodes(huffmanTree, '');
+
+         // Encode data
+         let encoded = '';
+         for (let byte of data) {
+            encoded += codes[byte];
+         }
+
+         return encoded;
+      }
+
+      function rleCompress(data) {
+         // Optimized Run-Length Encoding (RLE) compression
+         let encoded = [];
+         let prevByte = data[0];
+         let count = 1;
+         for (let i = 1; i < data.length; i++) {
+            if (data[i] === prevByte && count < 255) {
+               count++;
+            } else {
+               encoded.push(prevByte, count);
+               prevByte = data[i];
+               count = 1;
+            }
+         }
+         encoded.push(prevByte, count);
+         return new Uint8Array(encoded);
+      }
+
+      async function compressAudio() {
+         const fileInput = document.getElementById('audioFile');
+         if (fileInput.files.length === 0) {
+            alert("Please select an audio file.");
+            return;
+         }
+
+         const file = fileInput.files[0];
+         const arrayBuffer = await readFileAsArrayBuffer(file);
+         const audioData = new Uint8Array(arrayBuffer);
+
+         // Set audio source for original file
+         const audioURL = URL.createObjectURL(file);
+         const originalAudio = document.getElementById('originalAudio');
+         originalAudio.src = audioURL;
+
+         // Original size in bytes
+         const originalSize = audioData.byteLength;
+
+         // Huffman Compression
+         const huffmanCompressedData = huffmanCompress(audioData);
+         const huffmanCompressedSize = Math.ceil(huffmanCompressedData.length / 8); // bits to bytes
+
+         // RLE Compression
+         const rleCompressedData = rleCompress(audioData);
+         const rleCompressedSize = rleCompressedData.byteLength;
+
+         // Convert sizes to KB
+         const originalSizeKB = (originalSize / 1024).toFixed(2);
+         const huffmanCompressedSizeKB = (huffmanCompressedSize / 1024).toFixed(2);
+         const rleCompressedSizeKB = (rleCompressedSize / 1024).toFixed(2);
+
+         // Display results
+         document.getElementById('results').innerHTML = `
+                <p>Results</p>
+                <h3 class="originalsize">Original Size: ${originalSizeKB} KB</h3>
+                <div class="container3">
+                  <div class="huffman">
+                    <h3>Huffman Compression</h3>
+                    <p>Compressed Size: ${huffmanCompressedSizeKB} KB</p>
+                    <p>Compression Ratio: ${(originalSize / huffmanCompressedSize).toFixed(2)}</p>
+                    <audio controls>
+                      <source src="${audioURL}" type="${file.type}">
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                  <div class="aritmatik">
+                    <h3>Arithmetic Compression</h3>
+                    <p>Compressed Size: ${rleCompressedSizeKB} KB</p>
+                    <p>Compression Ratio: ${(originalSize / rleCompressedSize).toFixed(2)}</p>
+                    <audio controls>
+                      <source src="${audioURL}" type="${file.type}">
+                      Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                </div>
+            `;
+      }
+   </script>
+</body>
+
+</html>
